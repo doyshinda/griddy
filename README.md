@@ -20,6 +20,8 @@ assert_eq!(
     vec![(0, 1), (2, 1)],
     grid.col_neighbors(1, 0),
 );
+```
+
 ### Get all the neighbors of a particular cell.
 
 Getting all neighbors for cell at `[1, 0]` (value: 4) would return a vec of cooridinates:
