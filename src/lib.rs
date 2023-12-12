@@ -9,7 +9,7 @@
 //! ```
 //! use griddy::Grid;
 //!
-//! let grid = Grid::from_2d(vec![
+//! let grid = Grid::from_2d_unchecked(vec![
 //!     vec![0, 1, 2],
 //!     vec![4, 5, 6],
 //!     vec![7, 8, 9],
@@ -28,7 +28,7 @@
 //! ```
 //! use griddy::Grid;
 //!
-//! let grid = Grid::from_2d(vec![
+//! let grid = Grid::from_2d_unchecked(vec![
 //!     vec![0, 1, 2],
 //!     vec![4, 5, 6],
 //!     vec![7, 8, 9],

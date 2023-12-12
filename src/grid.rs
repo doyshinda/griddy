@@ -10,7 +10,7 @@ pub struct UnequalColumnsError;
 /// ```
 /// use griddy::Grid;
 ///
-/// let grid = Grid::from_2d(vec![
+/// let grid = Grid::from_2d_unchecked(vec![
 ///     vec![1, 2],
 ///     vec![9, 8],
 /// ]);
@@ -54,6 +54,11 @@ impl<T> Grid<T> {
     /// Initialize a Grid from a 2D vector.
     pub fn from_2d_unchecked(grid: Vec<Vec<T>>) -> Grid<T> {
         Grid { grid }
+    }
+
+    /// Insert a row at idx.
+    pub fn insert_row(&mut self, idx: usize, row: Vec<T>) {
+        self.grid.insert(idx, row);
     }
 
     /// The number of rows.
@@ -498,8 +503,8 @@ mod tests {
     }
 
     #[test]
-    fn test_nei() {
-        let grid = Grid::from_2d(vec![
+    fn neighbors_values() {
+        let grid = Grid::from_2d_unchecked(vec![
             vec![0, 1, 2],
             vec![4, 5, 6],
             vec![7, 8, 9],
@@ -508,6 +513,27 @@ mod tests {
         assert_eq!(
             vec![(1, 1), (0, 0), (2, 0), (0, 1), (2, 1)],
             grid.neighbors(1, 0),
+        );
+
+        let n = grid.neighbors(1, 1);
+        let v: Vec<_> = n.iter().map(|(r, c)| grid[*r][*c]).collect();
+        assert_eq!(
+            vec![4, 6, 1, 8, 0, 2, 7, 9],
+            v,
+        );
+
+        let n = grid.neighbors(0, 0);
+        let v: Vec<_> = n.iter().map(|(r, c)| grid[*r][*c]).collect();
+        assert_eq!(
+            vec![1, 4, 5],
+            v,
+        );
+
+        let n = grid.neighbors(1, 2);
+        let v: Vec<_> = n.iter().map(|(r, c)| grid[*r][*c]).collect();
+        assert_eq!(
+            vec![5, 2, 9, 1, 8],
+            v,
         );
     }
 }
