@@ -61,6 +61,60 @@ impl<T> Grid<T> {
         self.grid.insert(idx, row);
     }
 
+    /// Transpose
+    pub fn transpose(&self) -> Grid<T>
+    where
+        T: Copy,
+    {
+        let mut g = Grid::init(
+            self.cols_len(),
+            self.rows_len(),
+            self.grid[0][0]
+        );
+        for x in 0..self.cols_len() {
+            for y in 0..self.rows_len() {
+                g[x][y] = self.grid[y][x];
+            }
+        }
+        g
+    }
+
+    pub fn print(&self)
+    where
+        T: std::fmt::Debug
+    {
+        for r in self.rows() {
+            println!("{:?}", r);
+        }
+    }
+
+    pub fn rotate(&mut self)
+    where
+        T: Copy
+    {
+        let mut temp = vec![];
+
+        for column in 0..self.rows_len() {
+            let mut t = vec![];
+            for row in (0..self.rows_len()).rev() {
+                t.push(self.grid[row][column]);
+            }
+            temp.push(t);
+        }
+
+        for i in 0..self.rows_len() {
+            for j in 0..self.rows_len() {
+                self.grid[i][j] = temp[i][j];
+            }
+        }
+    }
+
+    pub fn flip_y(&mut self) {
+        for r in self.rows_mut() {
+            r.reverse();
+        }
+    }
+
     /// The number of rows.
     pub fn rows_len(&self) -> usize {
         self.grid.len()
@@ -216,6 +270,11 @@ impl<T> Grid<T> {
     /// Return an iter over the rows
     pub fn rows(&self) -> std::slice::Iter<'_, Vec<T>> {
         self.grid.iter()
+    }
+
+    /// Return a mut iter over the rows
+    pub fn rows_mut(&mut self) -> std::slice::IterMut<'_, Vec<T>> {
+        self.grid.iter_mut()
     }
 
     /// Fold the 2d grid "up" at `row`. Takes a closure that passes in a reference to the `new`
